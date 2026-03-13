@@ -1,6 +1,7 @@
 
 use std::io::{self, Write};
 use std::convert::TryFrom;
+use std::result::Result;
 
 #[repr(u8)]
 #[derive(PartialEq)]
@@ -13,7 +14,6 @@ enum MainMenuOptions {
     Exit = 5,
 }
 
-#[derive(Debug)]
 pub struct InvalidMainMenuOption(u8);
 
 // Implement the TryFrom trait for your enum
@@ -34,14 +34,14 @@ impl TryFrom<u8> for MainMenuOptions {
 }
 
 pub fn main_loop() {
-    let mut selectedOption = MainMenuOptions::Unknown;
+    let mut selected_option = MainMenuOptions::Unknown;
 
-    while selectedOption != MainMenuOptions::Exit
+    while selected_option != MainMenuOptions::Exit
     {
         display_main_menu();
         display_user_input();
         let res = get_user_input(); 
-        selectedOption = handle_main_menu_response(res);
+        selected_option = handle_main_menu_response(res);
     }
 }
 
@@ -78,17 +78,17 @@ fn get_user_input() -> u8 {
 }
 
 fn handle_main_menu_response(res: u8) -> MainMenuOptions {
-   match gstd::Ok(MainMenuOptions::try_from(res)) {
-        MainMenuOptions::DisplayTasks => {
+   match MainMenuOptions::try_from(res) {
+        Ok(MainMenuOptions::DisplayTasks) => {
             display_task_submenu();
             return MainMenuOptions::DisplayTasks;
         }
-        MainMenuOptions::AddTask => {
+        Ok(MainMenuOptions::AddTask) => {
             display_add_task_submenu();
             return MainMenuOptions::AddTask;
         }
-        MainMenuOptions::Exit => { return MainMenuOptions::Exit; }
-        _ => { println!("Unrecognized response, please reenter.\n"); display_main_menu(); }
+        Ok(MainMenuOptions::Exit) => { return MainMenuOptions::Exit; }
+        _ => { println!("Unrecognized response, please reenter.\n"); display_main_menu(); return MainMenuOptions::Unknown; }
    } 
 }
 
