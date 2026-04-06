@@ -3,7 +3,7 @@ use std::io::{self, Write};
 use std::convert::TryFrom;
 use std::result::Result;
 
-mod taskData;
+use crate::taskData;
 
 #[repr(u8)]
 #[derive(PartialEq)]
