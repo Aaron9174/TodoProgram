@@ -1,0 +1,21 @@
+[package]
+name = "ErrorHandling"
+version = "0.1.0"
+edition = "2024"
+
+# Specifying this means that 'stack unwinding' doesn't happen
+# =========================================================== #
+# Stack unwinding is where rust walks back up the stack and cleans up the data from each function when
+# an unrecoverable errors is called (the panic! macro is used)
+# =========================================================== #
+# Stack unwinding is a lot of work and doing the following disables to so no cleaning up happens.
+# This leaves cleaning up the memory to the OS.
+#
+# panic = 'abort' // Always abort
+#
+# [profile.release]
+# panic = 'abort' // Abort only when built for release
+#
+# =========================================================== #
+
+[dependencies]
